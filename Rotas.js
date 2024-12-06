@@ -17,7 +17,7 @@ app.engine('handlebars', handlebars.engine({
 }))
 app.set('view engine', 'handlebars')
 
-app.get("/", (req,res)=>{
+app.get("/exibir", (req,res)=>{
     post.findAll().then(function(posts){
         res.render('home', {posts: posts})
     })
@@ -30,10 +30,9 @@ app.get('/form', (req, res)=>{
 
 app.post("/add", (req, res)=>{
     post.create({
-        Título: req.body.titulo,
+        titulo: req.params.titulo,
         Conteudo: req.body.conteudo
-    }).then(()=> res.redirect("/"))
-    .catch(()=> res.send("erro ao criar post"))
+    }).then(() => res.redirect("/exibir"))
 })
 
 
