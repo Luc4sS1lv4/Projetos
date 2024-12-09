@@ -17,7 +17,7 @@ app.engine('handlebars', handlebars.engine({
 }))
 app.set('view engine', 'handlebars')
 
-app.get("/", (req,res)=>{
+app.get("/lista", (req,res)=>{
     post.findAll().then(function(posts){
         res.render('home', {posts: posts})
     })
@@ -32,11 +32,17 @@ app.post("/add", (req, res)=>{
     post.create({
         Título: req.body.titulo,
         Conteudo: req.body.conteudo
-    }).then(()=> res.redirect("/"))
+    }).then(()=> res.redirect("/lista"))
     .catch(()=> res.send("erro ao criar post"))
 })
 
-
+app.get("/deletar/:id", (req, res)=>{
+    post.destroy({where: {'id': req.params.id}}).then(()=>{
+        res.redirect("/lista")
+    }).catch(()=>{
+        res.send("Não foi possivel excluir")
+    })
+})
 
 
 app.listen(porta, () => console.log(`Servidor rodando na porta ${porta}`))
